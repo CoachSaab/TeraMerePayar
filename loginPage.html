@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Love Calculator</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            height: 100vh;
+            background-color: #ffcccc; /* Background color */
+            margin: 0;
+        }
+
+        #loveCalculator {
+            max-width: 300px;
+            margin: 0 auto; /* Center the div horizontally */
+            padding: 130px;
+            border: 2px solid #ff6666; /* Border style and color */
+            border-radius: 10px;
+            background-color: #fff; /* Background color */
+            text-align: center; /* Center text within the div */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+            animation: fadeIn 1s ease; /* Fade-in animation */
+            font-size: 25px;      
+              }
+
+        h1 {
+            color: #ff6666; /* Header text color */
+        }
+
+        p {
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            color: #333;
+        }
+
+        input[type="text"] {
+            width: 90%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #ff6666; /* Button background color */
+            color: #fff; /* Button text color */
+            border: none;
+            padding: 10px 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease; /* Button hover effect */
+        }
+
+        button:hover {
+            background-color: #ff3333; /* Button hover color */
+        }
+
+        #result {
+            margin-top: 20px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+       @keyframes heartbeat {
+    0% {
+        transform: scale(1);
+    }
+    25% {
+        transform: scale(1.1);
+    }
+    50% {
+        transform: scale(1);
+    }
+    75% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+h1 {
+    color: #ff6666;
+    animation: heartbeat 1.8s infinite; /* Apply the heartbeat animation */
+}
+
+
+    </style>
+</head>
+
+<body>
+    <div id="loveCalculator">
+        <h1><span class="heart">❤</span> Love Calculator <span class="heart">❤</span></h1>
+        <p>Enter your names and find out your love percentage:</p>
+        <label for="sname">Your Name:</label>
+        <input type="text" id="sname" placeholder="Your Name">
+        <br><br>
+        <label for="fname">Partner's Name:</label>
+        <input type="text" id="fname" placeholder="Partner's Name">
+        <br><br>
+        <button id="calculateButton">Calculate</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const calculateButton = document.getElementById("calculateButton");
+        const resultDiv = document.getElementById("result");
+
+        calculateButton.addEventListener("click", function () {
+            const sname = document.getElementById("sname").value;
+            const fname = document.getElementById("fname").value;
+
+            const xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+
+            xhr.addEventListener('readystatechange', function () {
+                if (this.readyState === this.DONE) {
+                    const response = JSON.parse(this.responseText);
+                    resultDiv.innerHTML = `Love Percentage: ${response.percentage}%<br>Message: ${response.result}`;
+                }
+            });
+
+            xhr.open('GET', `https://love-calculator.p.rapidapi.com/getPercentage?sname=${sname}&fname=${fname}`);
+            xhr.setRequestHeader('X-RapidAPI-Key', '5cc0c87945mshfe7bcb4f6ad2fbep1de432jsn1e801db76266');
+            xhr.setRequestHeader('X-RapidAPI-Host', 'love-calculator.p.rapidapi.com');
+
+            xhr.send();
+        });
+    </script>
+</body>
+
+</html>
